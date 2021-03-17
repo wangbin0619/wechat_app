@@ -1,3 +1,8 @@
+# -*- coding: utf-8 -*-
+
+import sys
+reload(sys)
+sys.setdefaultencoding('utf-8')
 
 from wxpy import *
 
@@ -30,7 +35,7 @@ def forward_robot_message(recv_msg):
     num_msg = num_msg + 1
     print("Received Message: %d type: %s group: %s" %(num_msg, recv_msg.type, recv_msg.chat))
 
-    str_reply = ""
+    str_reply = "ignore..."
 
     if recv_msg.member == group_robot :
 
@@ -54,7 +59,7 @@ def forward_robot_message(recv_msg):
                     str_reply = "替补周日"
                     # 发送替补
 
-    recv_msg.forward(bot.file_helper, prefix='报名机器人信息： ')
+        recv_msg.forward(bot.file_helper, prefix='报名机器人信息： ')
 
     str_tmp = "我的回复： " + str_reply
     bot.file_helper.send(str_tmp)
