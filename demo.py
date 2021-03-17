@@ -16,10 +16,12 @@ num_msg = 0
 
 ####### 监控星羽联盟群中的周日报名信息，周四报名时抢报
 # 定位星羽联盟群
-badminton_group = ensure_one(bot.groups().search('星羽联盟'))
+# print(bot.groups())
+badminton_group = ensure_one(bot.groups().search('星羽联盟🏸'))
 
 # 定位报名机器人
 group_robot = ensure_one(badminton_group.search('运动去'))
+group_lead = ensure_one(badminton_group.search('阿星'))
 
 # 将群机器人的消息转发到文件传输助手
 # @bot.register(badminton_group, TEXT)
@@ -28,13 +30,13 @@ def forward_robot_message(recv_msg):
 
     global num_msg 
     num_msg = num_msg + 1
-    print("Received Message: %d type: %s group: %s" %(num_msg, recv_msg.type, recv_msg.chat))
+    print("\nReceived Message: %d type: %s group: %s" %(num_msg, recv_msg.type, recv_msg.chat))
+    print("Message Content: \n %s" %(recv_msg.text))
 
-    str_reply = ""
+    str_reply = "忽略。。。"
+    prefix_tmp = "（无）"
 
     if recv_msg.member == group_robot :
-
-        print("Message Content: %s" %(recv_msg.text))
 
         index_sunday = recv_msg.text.find("周二")
         index_shenggu = recv_msg.text.find("在胜古体育馆打羽毛球")
@@ -42,7 +44,7 @@ def forward_robot_message(recv_msg):
         index_waiting = recv_msg.text.find("替补人员名单：")
         index_me = recv_msg.text.find("王斌")
 
-        print("sunday %d shenggu %d in %d waiting %d wangbin %d " \
+        print("机器人信息处理： sunday %d shenggu %d in %d waiting %d wangbin %d " \
                 %(index_sunday, index_shenggu, index_in, index_waiting, index_me))
 
         if index_sunday >= 0 and index_shenggu > index_sunday and index_in > index_shenggu :
@@ -53,12 +55,20 @@ def forward_robot_message(recv_msg):
                 else:
                     str_reply = "替补周日"
                     # 发送替补
+        prefix_tmp = "<<报名机器人信息>> "
 
-    recv_msg.forward(bot.file_helper, prefix='报名机器人信息： ')
+    if recv_msg.member == group_lead :
+        print("Message from 阿星 " )
+        prefix_tmp = "<<阿星信息>> "
+        
 
-    str_tmp = "我的回复： " + str_reply
+    recv_msg.forward(bot.file_helper, prefix=prefix_tmp)
+
+    str_tmp = "<<我的回复>> " + str_reply
     bot.file_helper.send(str_tmp)
 
     return ""
+
+
 
 embed()
