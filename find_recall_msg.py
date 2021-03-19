@@ -27,8 +27,6 @@ face_bug = None
 @bot.register(msg_types=[TEXT, PICTURE, MAP, CARD, SHARING, RECORDING, ATTACHMENT, VIDEO])
 def handler_receive_msg(msg):
 
-    print("Received Message: Type: %s Group: %s From: %s" %(msg.type, msg.chat, msg.member))
-
     global face_bug
     # 获取的是本地时间戳并格式化本地时间戳 e: 2017-04-21 21:30:08
     msg_time_rec = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
@@ -39,7 +37,11 @@ def handler_receive_msg(msg):
     # 消息时间
     msg_time = msg.create_time
     # 消息发送人昵称 | 这里也可以使用RemarkName备注　但是自己或者没有备注的人为None
-    msg_from = msg.member
+    if msg.member != None:
+        msg_from = msg.member
+    else:
+        msg_from = msg.chat
+
     # 消息内容
     msg_content = None
     # 分享的链接
@@ -67,6 +69,9 @@ def handler_receive_msg(msg):
     #     msg_share_url = msg['Url']
     face_bug = msg_content
     # 更新字典
+    print("ID: %d Type: %s Chat: %s Member: %s Content: %s" \
+        %(msg_id, msg_type, msg.chat, msg_from, msg_content))
+
     msg_dict.update(
         {
             msg_id: {
@@ -77,8 +82,8 @@ def handler_receive_msg(msg):
         }
     )
     # 打印字典内容
-    for key,value in msg_dict.items():
-        print(key+": " + str(value))
+    # for key,value in msg_dict.items():
+    #     print("DICT: Key %d : Value: %s" %(key, str(value)))
 
 # 收到note通知类消息，判断是不是撤回并进行相应操作
 # @itchat.msg_register([NOTE])
