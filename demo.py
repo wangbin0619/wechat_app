@@ -4,6 +4,7 @@ from wxpy import *
 bot = Bot(cache_path=True)
 
 num_msg = 0
+num_reply = 0
 
 # @bot.register()
 # def recv_send_msg(recv_msg):
@@ -30,6 +31,9 @@ def forward_robot_message(recv_msg):
 
     global num_msg 
     num_msg = num_msg + 1
+
+    global num_reply
+
     print("\nReceived Message: %d type: %s group: %s" %(num_msg, recv_msg.type, recv_msg.chat))
     print("Message Content: \n %s" %(recv_msg.text))
 
@@ -48,12 +52,14 @@ def forward_robot_message(recv_msg):
                 %(index_sunday, index_shenggu, index_in, index_waiting, index_me))
 
         if index_sunday >= 0 and index_shenggu > index_sunday and index_in > index_shenggu :
-            if index_me == -1:
+        
+            if index_me == -1 and num_reply < 3:
+                num_reply = num_reply + 1
                 if index_waiting == -1:
                     # 发送报名
-                    str_reply = "报名周日"
+                    str_reply = "报名周二"
                 else:
-                    str_reply = "替补周日"
+                    str_reply = "替补周二"
                     # 发送替补
         prefix_tmp = "<<报名机器人信息>> "
 
