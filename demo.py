@@ -48,12 +48,12 @@ def forward_robot_message(recv_msg):
         index_waiting = recv_msg.text.find("替补人员名单：")
         index_me = recv_msg.text.find("王斌")
 
-        print("机器人信息处理： sunday %d shenggu %d in %d waiting %d wangbin %d " \
-                %(index_sunday, index_shenggu, index_in, index_waiting, index_me))
+        print("机器人信息处理： sunday %d shenggu %d in %d waiting %d wangbin %d num_reply %d" \
+                %(index_sunday, index_shenggu, index_in, index_waiting, index_me, num_reply))
 
         if index_sunday >= 0 and index_shenggu > index_sunday and index_in > index_shenggu :
         
-            if index_me == -1 and num_reply < 3:
+            if index_me == -1 and num_reply < 30:
                 num_reply = num_reply + 1
                 if index_waiting == -1:
                     # 发送报名
