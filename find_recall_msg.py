@@ -14,7 +14,7 @@ bot = Bot(cache_path=True)
 msg_dict = {}
 
 # 文件存储临时目录
-rev_tmp_dir = "/home/wangbin/RevDir/"
+rev_tmp_dir = "/root/RevDir/"
 if not os.path.exists(rev_tmp_dir): 
     os.mkdir(rev_tmp_dir)
 
